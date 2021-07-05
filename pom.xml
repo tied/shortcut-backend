@@ -289,6 +289,7 @@
             <Atlassian-Scan-Folders>META-INF/plugin-descriptor</Atlassian-Scan-Folders>
           </instructions>
           <extractDependencies>false</extractDependencies>
+          <useHttps>true</useHttps>
         </configuration>
       </plugin>
       <plugin>
