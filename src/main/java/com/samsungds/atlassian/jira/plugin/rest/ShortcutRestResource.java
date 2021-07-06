@@ -1,6 +1,8 @@
 package com.samsungds.atlassian.jira.plugin.rest;
 
 import com.atlassian.activeobjects.external.ActiveObjects;
+import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
 import com.samsungds.atlassian.jira.plugin.ao.Shortcut;
@@ -34,10 +36,10 @@ public class ShortcutRestResource {
 
     @GET
     @AnonymousAllowed
-    @Path("/shortcuts/userName/{userName}")
+    @Path("/shortcuts")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getShortcutsByUserName(@PathParam("userName") String userName) {
-        List<Shortcut> shortcutList = newArrayList(ao.find(Shortcut.class, Query.select().where("user_name = ?", userName)));
+    public Response getShortcutsByUserName() {
+        List<Shortcut> shortcutList = newArrayList(ao.find(Shortcut.class, Query.select().where("user_name = ?", this.getLoggedInUserName())));
         Iterator<Shortcut> shortcutIterator = shortcutList.iterator();
         List<ShortcutVo> shortcutVoList = new ArrayList<>();
         while (shortcutIterator.hasNext()) {
@@ -52,38 +54,43 @@ public class ShortcutRestResource {
         return Response.ok(shortcutVoList).build();
     }
 
+    private String getLoggedInUserName() {
+        ApplicationUser loggedInUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
+        return loggedInUser.getName();
+    }
+
     @POST
     @AnonymousAllowed
-    @Path("/shortcuts/userName/{userName}/name/{name}/url/{url}")
+    @Path("/shortcuts/name/{name}/url/{url}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response addShortcut(@PathParam("userName") String userName, @PathParam("name") String name, @PathParam("url") String url) {
+    public Response addShortcut(@PathParam("name") String name, @PathParam("url") String url) {
         final Shortcut shortcut = ao.create(Shortcut.class);
         shortcut.setName(name);
         shortcut.setUrl(url);
-        shortcut.setUserName(userName);
+        shortcut.setUserName(this.getLoggedInUserName());
         shortcut.save();
         return Response.ok("post").build();
     }
 
     @PUT
     @AnonymousAllowed
-    @Path("/shortcuts/userName/{userName}/id/{id}/name/{name}/url/{url}")
+    @Path("/shortcuts/id/{id}/name/{name}/url/{url}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response modifyShortcut(@PathParam("userName") String userName, @PathParam("id") int id, @PathParam("name") String name, @PathParam("url") String url) {
+    public Response modifyShortcut(@PathParam("id") int id, @PathParam("name") String name, @PathParam("url") String url) {
         List<Shortcut> shortcutList = newArrayList(ao.find(Shortcut.class, Query.select().where("id = ?", id)));
         Shortcut shortcut = shortcutList.get(0);
         shortcut.setName(name);
         shortcut.setUrl(url);
-        shortcut.setUserName(userName);
+        shortcut.setUserName(this.getLoggedInUserName());
         shortcut.save();
         return Response.ok("put").build();
     }
 
     @DELETE
     @AnonymousAllowed
-    @Path("/shortcuts/userName/{userName}/id/{id}")
+    @Path("/shortcuts/id/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response modifyShortcut(@PathParam("userName") String userName, @PathParam("id") int id) {
+    public Response modifyShortcut(@PathParam("id") int id) {
         List<Shortcut> shortcutList = newArrayList(ao.find(Shortcut.class, Query.select().where("id = ?", id)));
         Shortcut shortcut = shortcutList.get(0);
         ao.delete(shortcut);
