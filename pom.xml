@@ -9,7 +9,7 @@
 
   <organization>
     <name>itplatfrom samsungds net</name>
-    <url>http://itplatfrom.samsungds.net/</url>
+    <url>https://itplatfrom.samsungds.net</url>
   </organization>
 
   <name>Shortcut - Samsung DS Atlassian Jira Plugin</name>
@@ -52,6 +52,12 @@
       <artifactId>jira-api</artifactId>
       <version>${jira.version}</version>
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>jta</groupId>
+          <artifactId>jta</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <!-- Add dependency on jira-core if you want access to JIRA implementation classes as well as the sanctioned API. -->
     <!-- This is not normally recommended, but may be required eg when migrating a plugin originally developed against JIRA 4.x -->
@@ -189,12 +195,6 @@
       <version>4.1.0</version>
     </dependency>
     <dependency>
-      <groupId>jta</groupId>
-      <artifactId>jta</artifactId>
-      <version>1.0.1b</version>
-    </dependency>
-
-    <dependency>
       <groupId>com.atlassian.activeobjects</groupId>
       <artifactId>activeobjects-plugin</artifactId>
       <version>${ao.version}</version>
@@ -211,6 +211,7 @@
 
   <build>
     <plugins>
+      <!--
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
@@ -239,7 +240,7 @@
             </configuration>
           </execution>
           <execution>
-            <id>yarn build-local</id>
+            <id>yarn build-${frontend.env.name}</id>
             <goals>
               <goal>yarn</goal>
             </goals>
@@ -250,6 +251,7 @@
           </execution>
         </executions>
       </plugin>
+      -->
       <plugin>
         <groupId>com.atlassian.maven.plugins</groupId>
         <artifactId>jira-maven-plugin</artifactId>
@@ -323,6 +325,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <frontend.env.name>local</frontend.env.name>
   </properties>
 
 </project>

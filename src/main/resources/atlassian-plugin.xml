@@ -11,19 +11,21 @@
   <!-- add our i18n resource -->
   <resource type="i18n" name="i18n" location="shortcut" />
   <!-- add our web resources -->
-  <web-resource key="shortcut-resources" name="shortcut Web Resources">
+  <web-resource key="shortcut-resources" name="Shortcut Web Resources">
     <dependency>com.atlassian.auiplugin:ajs</dependency>
     <resource type="download" name="shortcut.css" location="/css/shortcut.css" />
     <resource type="download" name="shortcut.js" location="/js/shortcut.js" />
     <resource type="download" name="images/" location="/images" />
+    <resource type="download" name="thumbnails/" location="/thumbnails" />
     <context>shortcut-resources</context>
   </web-resource>
   <rest name="Shortcut Rest Resource" i18n-name-key="shortcut-rest-resource.name" key="shortcut-rest-resource" path="/shortcutrestresource" version="1.0">
     <description key="shortcut-rest-resource.description">The Shortcut Rest Resource Plugin</description>
   </rest>
-  <gadget key="shortcut" name="Shortcut gadget" location="shortcut-gadget-vue.xml"/>
-  <ao key="ao-module">
+  <ao key="shortcut-ao-module" name="Shortcut Active Object Module">
     <description>The module configuring the Active Objects service used by this plugin</description>
     <entity>com.samsungds.atlassian.jira.plugin.ao.Shortcut</entity>
   </ao>
+  <gadget key="shortcut" name="Shortcut gadget" location="shortcut-gadget-vue.xml"/>
+  <gadget key="my-projects" name="My Projects gadget" location="my-projects-gadget.xml"/>
 </atlassian-plugin>
