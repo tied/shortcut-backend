@@ -50,7 +50,7 @@ function displayGreeting () {
 
  // Set the background color according to the mycolor userpref
  var element = document.getElementById('content_div');
- element.style.height=250;
+ // element.style.height=250;
  // Set the background color according to the mycolor userpref
  element.style.backgroundColor=prefs.getString("mycolor");
 
@@ -60,7 +60,7 @@ function displayGreeting () {
 
  // If the "Show Photo?" checkbox is checked, display photo.
  if (prefs.getBool("mychoice") == true) {
-   html += '<img src="' + prefs.getString("myphoto") + '">';
+   html += '<img src="' + prefs.getString("myphoto") + '" style="width: 300px; height: 200px;">';
  }
  element.innerHTML = html;
 }
